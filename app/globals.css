@@ -73,7 +73,7 @@
 @layer components {
   /* Comic fonts */
   .comic-title {
-    font-family: var(--font-archivo), sans-serif;
+    font-family: var(--font-bangers), sans-serif;
     font-stretch: semi-expanded;
     letter-spacing: 1px;
     font-weight: 900;
@@ -81,7 +81,7 @@
   }
 
   .comic-subtitle {
-    font-family: var(--font-archivo), sans-serif;
+    font-family: var(--font-bangers), sans-serif;
     font-stretch: semi-expanded;
     letter-spacing: 1px;
     font-weight: 700;
@@ -157,7 +157,7 @@
 
   /* Comic effects */
   .comic-effect {
-    font-family: var(--font-archivo), sans-serif;
+    font-family: var(--font-bangers), sans-serif;
     font-stretch: semi-expanded;
     font-weight: 900;
     text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
@@ -212,9 +212,22 @@
     position: absolute;
     width: 100%;
     height: 100%;
-    background-image: radial-gradient(circle at center, transparent 0%, white 70%),
-      repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(0, 0, 0, 0.1) 20px, rgba(0, 0, 0, 0.1) 21px),
-      repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(0, 0, 0, 0.1) 20px, rgba(0, 0, 0, 0.1) 21px);
+    background-image:
+      radial-gradient(circle at center, transparent 0%, white 70%),
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 20px,
+        rgba(0, 0, 0, 0.1) 20px,
+        rgba(0, 0, 0, 0.1) 21px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 20px,
+        rgba(0, 0, 0, 0.1) 20px,
+        rgba(0, 0, 0, 0.1) 21px
+      );
   }
 
   /* Comic logo */

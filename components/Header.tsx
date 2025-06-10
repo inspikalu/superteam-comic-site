@@ -16,7 +16,7 @@ export default function Header({ onScrollToTimeline }: HeaderProps) {
         <div className="action-lines"></div>
       </div>
 
-      <div className="container mx-auto px-6 sm:px-8 text-center z-10 pt-16">
+      <div className="container mx-auto px-6 sm:px-8 text-center z-10 pt-8">
         {/* Comic book title */}
         <div className="mb-8">
           <div className="inline-block">

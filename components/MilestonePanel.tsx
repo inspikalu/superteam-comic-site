@@ -28,37 +28,38 @@ export default function MilestonePanel({
   };
 
   return (
-    <div className="comic-panel-milestone bg-white border-4 border-black overflow-hidden opacity-0">
-      {/* Image placeholder area */}
-      <div className="h-50 bg-gray-100 border-b-4 border-black flex items-center justify-center relative overflow-hidden">
+    <div className="comic-panel-milestone bg-white border-4 border-black overflow-hidden transform-gpu h-[85vh] w-[85vw] max-w-[800px] mx-auto flex flex-col snap-center my-2">
+      {/* Image area - takes up 70% of the height */}
+      <div className="h-[70%] bg-gray-100 border-b-4 border-black flex items-center justify-center relative overflow-hidden">
         <Image
           src={`/panels/img_${index + 1}.png`}
           width={100}
           height={100}
           alt={`milestone.chapter`}
-          className="w-full h-auto object-cover object-top"
+          className="w-full h-full object-cover object-center"
+          priority={index === 0}
         />
         {/* Chapter badge */}
-        <div className="absolute top-2 left-2 bg-black text-white px-2 py-1 font-bold text-xs border-2 border-black">
+        <div className="absolute top-4 left-4 bg-black text-white px-3 py-2 font-bold text-sm border-2 border-black z-10">
           {milestone.chapter}
         </div>
         {/* Comic effect */}
         <div
-          className={`${getEffectPosition(index)} text-green-500 font-bold text-sm comic-effect`}
+          className={`${getEffectPosition(index)} text-green-500 font-bold text-xl comic-effect z-10`}
         >
           {getComicEffect(index)}
         </div>
       </div>
 
-      {/* Content area */}
-      <div className="p-4">
-        <div className="text-xs font-bold text-black mb-1 uppercase tracking-wide">
+      {/* Content area - takes up remaining height */}
+      <div className="flex-1 p-6 flex flex-col justify-center bg-white">
+        <div className="text-sm font-bold text-black mb-2 uppercase tracking-wide">
           {milestone.date}
         </div>
-        <h3 className="text-sm font-bold text-black mb-2 leading-tight">
+        <h3 className="text-xl font-bold text-black mb-3 leading-tight">
           {milestone.title}
         </h3>
-        <p className="text-xs text-black leading-tight mb-4">
+        <p className="text-base text-black leading-relaxed">
           {milestone.desc}
         </p>
       </div>

@@ -1,46 +1,104 @@
 'use client';
 
-import { useEffect, forwardRef } from 'react';
+import { useEffect, forwardRef, useRef } from 'react';
 import { Zap } from 'lucide-react';
 import MilestonePanel from '@/components/MilestonePanel';
 import Link from 'next/link';
 import { milestones } from '@/data/milestones';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 
 const Timeline = forwardRef<HTMLDivElement>((props, ref) => {
-  // Animation for panels on scroll
+  const panelsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const introRef = useRef<HTMLDivElement>(null);
+  const finalRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-panel');
+    const panels = panelsRef.current;
+    const container = containerRef.current;
+    if (!container || panels.length === 0) return;
+
+    // Set all panels to absolute in the container, stacked
+    panels.forEach((panel, i) => {
+      if (panel) {
+        gsap.set(panel, {
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          margin: 'auto',
+          zIndex: milestones.length - i,
+          rotationY: 0,
+          opacity: i === 0 ? 1 : 0,
+          pointerEvents: i === 0 ? 'auto' : 'none',
+        });
+      }
+    });
+
+    // Pin the container and animate panels as user scrolls
+    const totalPanels = milestones.length;
+    const panelDuration = 1 / totalPanels;
+    let triggers: ScrollTrigger[] = [];
+
+    ScrollTrigger.create({
+      trigger: container,
+      start: 'top top',
+      end: `+=${window.innerHeight * totalPanels}`,
+      pin: true,
+      anticipatePin: 1,
+      scrub: true,
+      onUpdate: (self) => {
+        const progress = self.progress;
+        const panelIndex = Math.floor(progress * totalPanels);
+        panels.forEach((panel, i) => {
+          if (!panel) return;
+          if (i < panelIndex) {
+            gsap.to(panel, { rotationY: -90, opacity: 0, pointerEvents: 'none', duration: 0.5, overwrite: 'auto' });
+          } else if (i === panelIndex) {
+            gsap.to(panel, { rotationY: 0, opacity: 1, pointerEvents: 'auto', duration: 0.5, overwrite: 'auto' });
+          } else {
+            gsap.to(panel, { rotationY: 90, opacity: 0, pointerEvents: 'none', duration: 0.5, overwrite: 'auto' });
           }
         });
       },
-      { threshold: 0.1 }
-    );
+      onLeave: () => {
+        // When done, show the final panel
+        if (finalRef.current) {
+          gsap.to(finalRef.current, { opacity: 1, pointerEvents: 'auto', duration: 0.5 });
+        }
+      },
+      onEnterBack: () => {
+        if (finalRef.current) {
+          gsap.to(finalRef.current, { opacity: 0, pointerEvents: 'none', duration: 0.5 });
+        }
+      }
+    });
 
-    const panels = document.querySelectorAll('.comic-panel-milestone');
-    panels.forEach((panel) => observer.observe(panel));
+    // Hide the final panel initially
+    if (finalRef.current) {
+      gsap.set(finalRef.current, { opacity: 0, pointerEvents: 'none' });
+    }
 
     return () => {
-      panels.forEach((panel) => observer.unobserve(panel));
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
 
   return (
-    <section ref={ref} className="py-20 bg-white relative">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-center mb-16">
-          <div className="comic-title-box bg-black border-4 border-black px-8 py-2">
+    <section ref={ref} className="relative min-h-screen">
+      {/* Introduction Panel */}
+      <div ref={introRef} className="h-screen flex items-center justify-center bg-white p-4">
+        <div className="max-w-3xl mx-auto">
+          <div className="comic-title-box bg-black border-4 border-black px-8 py-2 mb-8">
             <h2 className="text-4xl md:text-5xl font-bold text-white comic-title">
               THE EPIC JOURNEY
             </h2>
           </div>
-        </div>
-
-        <div className="max-w-5xl mx-auto mb-16">
-          <div className="comic-panel bg-white border-4 border-black p-6">
+          <div className="comic-panel bg-white border-4 border-black p-6 relative">
             <p className="text-lg text-black leading-tight comic-text">
               This is the epic tale of SuperteamNG—where talent meets
               opportunity, and Web3 dreams become reality. Join us as we
@@ -53,16 +111,29 @@ const Timeline = forwardRef<HTMLDivElement>((props, ref) => {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Comic Panel Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {milestones.map((milestone, index) => (
-            <MilestonePanel key={index} milestone={milestone} index={index} />
-          ))}
-        </div>
+      {/* Milestone Panels Container (pinned) */}
+      <div
+        ref={containerRef}
+        className="relative h-[85vh] w-full flex items-center justify-center"
+        style={{ minHeight: '85vh' }}
+      >
+        {milestones.map((milestone, index) => (
+          <div
+            key={index}
+            ref={el => { panelsRef.current[index] = el; }}
+            className="w-full h-full flex items-center justify-center"
+            style={{ pointerEvents: index === 0 ? 'auto' : 'none' }}
+          >
+            <MilestonePanel milestone={milestone} index={index} />
+          </div>
+        ))}
+      </div>
 
-        {/* Final Anniversary Panel */}
-        <div className="mt-16 max-w-4xl mx-auto">
+      {/* Final Anniversary Panel (normal block, not absolute) */}
+      <div className="h-screen flex items-center justify-center bg-white p-4">
+        <div className="max-w-3xl mx-auto">
           <div className="comic-panel bg-white border-4 border-black p-8 pt-12 relative">
             <div className="absolute -top-[5rem] md:-top-8 left-1/2 transform -translate-x-1/2 bg-black text-white px-8 py-2 font-bold text-xl border-4 border-black comic-title">
               JUNE 10, 2025: THE CELEBRATION CONTINUES!

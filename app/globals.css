@@ -1,0 +1,288 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-archivo), sans-serif;
+    font-stretch: semi-expanded;
+  }
+}
+
+@layer components {
+  /* Comic fonts */
+  .comic-title {
+    font-family: var(--font-archivo), sans-serif;
+    font-stretch: semi-expanded;
+    letter-spacing: 1px;
+    font-weight: 900;
+    text-transform: uppercase;
+  }
+
+  .comic-subtitle {
+    font-family: var(--font-archivo), sans-serif;
+    font-stretch: semi-expanded;
+    letter-spacing: 1px;
+    font-weight: 700;
+  }
+
+  .comic-text {
+    font-family: var(--font-archivo), sans-serif;
+    font-stretch: semi-expanded;
+    font-weight: 500;
+  }
+
+  /* Comic panels */
+  .comic-panel {
+    position: relative;
+    box-shadow: 8px 8px 0 0 rgba(0, 0, 0, 1);
+    transition: all 0.3s ease;
+  }
+
+  .comic-panel:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 12px 12px 0 0 rgba(0, 0, 0, 1);
+  }
+
+  .comic-panel-milestone {
+    position: relative;
+    box-shadow: 6px 6px 0 0 rgba(0, 0, 0, 1);
+    transition: all 0.3s ease;
+    height: 320px;
+  }
+
+  .comic-panel-milestone:hover {
+    transform: translate(-2px, -2px) scale(1.02);
+    box-shadow: 8px 8px 0 0 rgba(0, 0, 0, 1);
+    z-index: 10;
+  }
+
+  /* Animation for panels */
+  .animate-panel {
+    animation: panelFadeIn 0.6s ease forwards;
+  }
+
+  @keyframes panelFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Comic buttons */
+  .comic-button {
+    font-family: var(--font-archivo), sans-serif;
+    font-stretch: semi-expanded;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 1);
+    transition: all 0.2s ease;
+    font-weight: 800;
+  }
+
+  .comic-button:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px rgba(0, 0, 0, 1);
+  }
+
+  .comic-button:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px rgba(0, 0, 0, 1);
+  }
+
+  /* Comic effects */
+  .comic-effect {
+    font-family: var(--font-archivo), sans-serif;
+    font-stretch: semi-expanded;
+    font-weight: 900;
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Jagged speech bubble for main title */
+  .jagged-bubble {
+    position: relative;
+    background-color: white;
+    border: 4px solid black;
+    clip-path: polygon(
+      0% 0%,
+      5% 13%,
+      15% 5%,
+      25% 0%,
+      35% 5%,
+      45% 0%,
+      55% 5%,
+      65% 0%,
+      75% 5%,
+      85% 0%,
+      95% 5%,
+      100% 0%,
+      95% 15%,
+      100% 30%,
+      95% 45%,
+      100% 60%,
+      95% 75%,
+      100% 90%,
+      95% 100%,
+      85% 95%,
+      75% 100%,
+      65% 95%,
+      55% 100%,
+      45% 95%,
+      35% 100%,
+      25% 95%,
+      15% 100%,
+      5% 95%,
+      0% 100%,
+      5% 85%,
+      0% 70%,
+      5% 55%,
+      0% 40%,
+      5% 25%,
+      0% 10%
+    );
+  }
+
+  /* Action lines background */
+  .action-lines {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at center, transparent 0%, white 70%),
+      repeating-linear-gradient(0deg, transparent, transparent 20px, rgba(0, 0, 0, 0.1) 20px, rgba(0, 0, 0, 0.1) 21px),
+      repeating-linear-gradient(90deg, transparent, transparent 20px, rgba(0, 0, 0, 0.1) 20px, rgba(0, 0, 0, 0.1) 21px);
+  }
+
+  /* Comic logo */
+  .comic-logo {
+    font-family: var(--font-archivo), sans-serif;
+    font-stretch: semi-expanded;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: 900;
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Comic title box */
+  .comic-title-box {
+    box-shadow: 4px 4px 0px rgba(0, 0, 0, 1);
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .comic-panel-milestone {
+      height: auto;
+      min-height: 280px;
+    }
+
+    .jagged-bubble {
+      clip-path: polygon(
+        0% 0%,
+        5% 8%,
+        15% 3%,
+        25% 0%,
+        35% 3%,
+        45% 0%,
+        55% 3%,
+        65% 0%,
+        75% 3%,
+        85% 0%,
+        95% 3%,
+        100% 0%,
+        95% 10%,
+        100% 20%,
+        95% 30%,
+        100% 40%,
+        95% 50%,
+        100% 60%,
+        95% 70%,
+        100% 80%,
+        95% 90%,
+        100% 100%,
+        85% 97%,
+        75% 100%,
+        65% 97%,
+        55% 100%,
+        45% 97%,
+        35% 100%,
+        25% 97%,
+        15% 100%,
+        5% 97%,
+        0% 100%,
+        5% 90%,
+        0% 80%,
+        5% 70%,
+        0% 60%,
+        5% 50%,
+        0% 40%,
+        5% 30%,
+        0% 20%,
+        5% 10%
+      );
+    }
+  }
+}

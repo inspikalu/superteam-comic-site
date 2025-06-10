@@ -30,7 +30,7 @@ export default function MilestonePanel({
   return (
     <div className="comic-panel-milestone bg-white border-4 border-black overflow-hidden opacity-0">
       {/* Image placeholder area */}
-      <div className="h-48 bg-gray-100 border-b-4 border-black flex items-center justify-center relative overflow-hidden">
+      <div className="h-50 bg-gray-100 border-b-4 border-black flex items-center justify-center relative overflow-hidden">
         <Image
           src={`/panels/img_${index + 1}.png`}
           width={100}
